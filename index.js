@@ -10,9 +10,16 @@ const webhooks = new Webhooks({
   secret: process.env.WEBHOOK_SECRET,
 });
 
-webhooks.on("*", ({ id, name, payload }) => {
-  const output = name + " event received " + payload.sender.login
-  console.log(output);
+webhooks.onAny(({ id, name, payload }) => {
+  console.log(payload.sender);
+  const tmp = [];
+  tmp.push({
+    event: name, 
+    action: payload.action, 
+    user: payload.sender.login,
+    avatar: payload.sender.avatar_url
+  });
+  console.log(tmp);
   // message = output;
   
   // broadcast the message to all of the connected clients
@@ -20,12 +27,12 @@ webhooks.on("*", ({ id, name, payload }) => {
   // of all of the websocket connections
   if(wss && wss.clients) {
     wss.clients.forEach(client => {
-      client.send(output)
-    })
+      client.send(JSON.stringify(tmp));
+    });
   }
 });
 
-webhooks.on("error", (error) => {
+webhooks.onError((error) => {
   console.log(`Error occured in "${error.event.name} handler: ${error.stack}"`);
 });
 
@@ -51,7 +58,4 @@ wss.on('connection', (ws) => {
         console.log('received: %s', message);
         ws.send(`Hello, you sent -> ${message}`);
     });
-
-    //send immediately a feedback to the incoming connection    
-    ws.send('Hi there, I am a WebSocket server');
 });

@@ -16,9 +16,12 @@
       }
 
       socket.onmessage = function(e) {
-          console.log(`I received the message: ${e.data}`)
+          const data = JSON.parse(e.data);
           const container = document.getElementById('container')
-          new gifAlert("", bdougie, flexPhrase, "starred");
+          console.log(data[0].event);
+          if (data[0].event === "star" && data[0].action === "created") {
+            new gifAlert(data[0].user, data[0].avatar, '', data[0].event);
+          }
       }
     </script>
 </html>
