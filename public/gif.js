@@ -3,8 +3,8 @@ const container = document.querySelector(".gif");
 const img = new Image();
 
 /* Config */
-const twitchTvHandle = "bdougieYO";
-const repoOwner = "bdougie";
+const twitchTvHandle = "Madd15";
+const repoOwner = "madd15";
 const repoName = "git-twitch";
 const PAUSE_DURATION = 30 * 1000; // 30 seconds
 const DISPLAY_DURATION = 10 * 1000; // 10 seconds
@@ -13,7 +13,7 @@ const DISPLAY_DURATION = 10 * 1000; // 10 seconds
 const beyGif = "https://media.giphy.com/media/VxkNDa92gcsRq/giphy.gif";
 const welcomeGif = "https://media.giphy.com/media/l3V0doGbp2EDaLHJC/giphy.gif";
 const pizzaGif = "https://media.giphy.com/media/3o6nUXaNE4wdhq8Foc/giphy.gif";
-const bdougie = "https://media.giphy.com/media/LT1Pq74cXuNQxyUmLk/giphy.gif";
+const star = "https://media.giphy.com/media/LT1Pq74cXuNQxyUmLk/giphy.gif";
 
 /* Sound Effects */
 const pewAudio = new Audio("horn.wav");
@@ -62,12 +62,14 @@ const generateTitle = {
     yo: " is hype!",
     welcome: " needs a welcome!",
     pizza: " needed a pizza party!",
-    starred: ` starred ${repoName}, like we knew they would!`,
+    star: ` starred ${repoName}, like we knew they would!`,
 };
 
 function gifAlert(user, gif, audio, type) {
     queue.add(async () => {
-        audio.play();
+        if(audio){
+            audio.play();
+        }
         container.innerHTML = `
         <h1 class="text-shadows">${user + generateTitle[type]}</h1>
         <img src="${gif}" />
