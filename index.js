@@ -11,21 +11,19 @@ const webhooks = new Webhooks({
 });
 
 webhooks.onAny(({ id, name, payload }) => {
-  console.log(payload.sender);
   const tmp = [];
   tmp.push({
-    event: name, 
-    action: payload.action, 
+    event: name,
+    action: payload.action,
     user: payload.sender.login,
     avatar: payload.sender.avatar_url
   });
-  console.log(tmp);
-  // message = output;
-  
+  console.log(`This data has been sent: `, tmp );
+
   // broadcast the message to all of the connected clients
   // wss is a server that contains clients which are an array
   // of all of the websocket connections
-  if(wss && wss.clients) {
+  if (wss && wss.clients) {
     wss.clients.forEach(client => {
       client.send(JSON.stringify(tmp));
     });
@@ -52,10 +50,10 @@ const server = app.listen(3000, () => console.log('Server started on port 3000')
 const wss = new WebSocket.Server({ server });
 
 wss.on('connection', (ws) => {
-    //connection is up, let's add a simple simple event
-    ws.on('message', (message) => {
-        //log the received message and send it back to the client
-        console.log('received: %s', message);
-        ws.send(`Hello, you sent -> ${message}`);
-    });
+  //connection is up, let's add a simple simple event
+  ws.on('message', (message) => {
+    //log the received message and send it back to the client
+    console.log('received: %s', message);
+    ws.send(`Hello, you sent -> ${message}`);
+  });
 });
